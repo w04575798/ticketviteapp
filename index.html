@@ -8,84 +8,119 @@
   <style>
     body {
       font-family: 'Montserrat', sans-serif;
-      background: linear-gradient(to right, #1e1e2f, #2a2a40);
-      color: #f2f2f2;
-      max-width: 600px;
-      margin: 0 auto;
+      background-color: #f4f4f9;
+      color: #333;
+      margin: 0;
       padding: 2rem;
     }
-
+  
     h1 {
       text-align: center;
       margin-bottom: 1.5rem;
+      font-size: 2rem;
+      font-weight: 600;
+      color: #2d2d2d;
     }
-
-    form {
-      background-color: #333;
+  
+    .container {
+      width: 80%;
+      max-width: 900px;
+      margin: 0 auto;
+      background-color: #fff;
       padding: 2rem;
       border-radius: 10px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.3);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     }
-
-    input, button {
-      width: 100%;
-      padding: 0.75rem;
-      margin-top: 1rem;
-      border-radius: 5px;
-      border: none;
-      font-size: 1rem;
-    }
-
-    input {
-      background-color: #444;
-      color: #fff;
-    }
-
-    input::placeholder {
-      color: #bbb;
-    }
-
-    button {
-      background-color: #ff4e50;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-
-    button:hover {
-      background-color: #ff2e30;
-    }
-
+  
     .concert-img {
       width: 100%;
-      border-radius: 10px;
+      border-radius: 8px;
       margin-bottom: 1rem;
+      object-fit: cover;
     }
-
+  
     .concert-details {
       text-align: center;
       margin-bottom: 1.5rem;
     }
-
+  
     .concert-details span {
       display: block;
       font-size: 1.1rem;
       margin-top: 0.5rem;
+      color: #444;
     }
-
+  
+    form {
+      display: grid;
+      gap: 1rem;
+    }
+  
+    input, button {
+      width: 100%;
+      padding: 1rem;
+      border-radius: 5px;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+    }
+  
+    input {
+      background-color: #f9f9f9;
+      color: #333;
+    }
+  
+    input::placeholder {
+      color: #bbb;
+    }
+  
+    input:focus {
+      border-color: #007bff;
+      outline: none;
+    }
+  
+    button {
+      background-color: #28a745;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      border: none;
+    }
+  
+    button:hover {
+      background-color: #218838;
+    }
+  
     .error {
       color: red;
       font-size: 0.9rem;
       margin-top: 5px;
     }
-
+  
     .valid {
       color: green;
       font-size: 0.9rem;
       margin-top: 5px;
     }
+  
+    .section-title {
+      font-weight: 600;
+      margin-bottom: 1rem;
+      font-size: 1.2rem;
+      color: #444;
+    }
+  
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+  
+    .form-group label {
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+    }
   </style>
+  
 </head>
 <body>
   <h1>Buy Tickets for The Rolling Stones</h1>
@@ -145,8 +180,8 @@
       const nameFeedback = document.getElementById('nameFeedback');
       const regex = /^[a-zA-Z\s]+$/; // Only letters and spaces
       if (regex.test(name)) {
-        nameFeedback.textContent = 'Valid name.';
-        nameFeedback.className = 'valid';
+        nameFeedback.textContent = ''; // No message for valid input
+        nameFeedback.className = '';
       } else {
         nameFeedback.textContent = 'Name should only contain letters and spaces.';
         nameFeedback.className = 'error';
@@ -158,8 +193,8 @@
       const emailFeedback = document.getElementById('emailFeedback');
       const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
       if (regex.test(email)) {
-        emailFeedback.textContent = 'Valid email.';
-        emailFeedback.className = 'valid';
+        emailFeedback.textContent = ''; // No message for valid input
+        emailFeedback.className = '';
       } else {
         emailFeedback.textContent = 'Please enter a valid email address.';
         emailFeedback.className = 'error';
@@ -171,8 +206,8 @@
       const phoneFeedback = document.getElementById('phoneFeedback');
       const regex = /^[0-9]{10}$/; // Assuming phone number is 10 digits
       if (regex.test(phone)) {
-        phoneFeedback.textContent = 'Valid phone number.';
-        phoneFeedback.className = 'valid';
+        phoneFeedback.textContent = ''; // No message for valid input
+        phoneFeedback.className = '';
       } else {
         phoneFeedback.textContent = 'Phone number must be 10 digits.';
         phoneFeedback.className = 'error';
@@ -183,8 +218,8 @@
       const quantity = document.getElementById('quantity').value;
       const quantityFeedback = document.getElementById('quantityFeedback');
       if (quantity >= 1) {
-        quantityFeedback.textContent = 'Valid number of tickets.';
-        quantityFeedback.className = 'valid';
+        quantityFeedback.textContent = ''; // No message for valid input
+        quantityFeedback.className = '';
       } else {
         quantityFeedback.textContent = 'Please select at least 1 ticket.';
         quantityFeedback.className = 'error';
@@ -194,10 +229,10 @@
     function validateCreditCard() {
       const creditCard = document.getElementById('creditCard').value;
       const creditCardFeedback = document.getElementById('creditCardFeedback');
-      const regex = /^[0-9]{16}$/; // Assuming a 16-digit credit card
+      const regex = /^[0-9]{16}$/;
       if (regex.test(creditCard)) {
-        creditCardFeedback.textContent = 'Valid credit card number.';
-        creditCardFeedback.className = 'valid';
+        creditCardFeedback.textContent = ''; 
+        creditCardFeedback.className = '';
       } else {
         creditCardFeedback.textContent = 'Credit card number must be 16 digits.';
         creditCardFeedback.className = 'error';
@@ -209,8 +244,8 @@
       const expirationFeedback = document.getElementById('expirationFeedback');
       const regex = /^(0[1-9]|1[0-2])\/?([0-9]{2})$/; // MM/YY format
       if (regex.test(expiration)) {
-        expirationFeedback.textContent = 'Valid expiration date.';
-        expirationFeedback.className = 'valid';
+        expirationFeedback.textContent = ''; 
+        expirationFeedback.className = '';
       } else {
         expirationFeedback.textContent = 'Expiration date should be in MM/YY format.';
         expirationFeedback.className = 'error';
@@ -222,8 +257,8 @@
       const securityCodeFeedback = document.getElementById('securityCodeFeedback');
       const regex = /^[0-9]{3,4}$/; // 3 or 4 digits for CVV
       if (regex.test(securityCode)) {
-        securityCodeFeedback.textContent = 'Valid CVV.';
-        securityCodeFeedback.className = 'valid';
+        securityCodeFeedback.textContent = '';
+        securityCodeFeedback.className = '';
       } else {
         securityCodeFeedback.textContent = 'CVV must be 3 or 4 digits.';
         securityCodeFeedback.className = 'error';
@@ -234,8 +269,8 @@
       const address = document.getElementById('address').value;
       const addressFeedback = document.getElementById('addressFeedback');
       if (address.trim() !== '') {
-        addressFeedback.textContent = 'Valid address.';
-        addressFeedback.className = 'valid';
+        addressFeedback.textContent = ''; 
+        addressFeedback.className = '';
       } else {
         addressFeedback.textContent = 'Address is required.';
         addressFeedback.className = 'error';
@@ -246,8 +281,8 @@
       const city = document.getElementById('city').value;
       const cityFeedback = document.getElementById('cityFeedback');
       if (city.trim() !== '') {
-        cityFeedback.textContent = 'Valid city.';
-        cityFeedback.className = 'valid';
+        cityFeedback.textContent = ''; 
+        cityFeedback.className = '';
       } else {
         cityFeedback.textContent = 'City is required.';
         cityFeedback.className = 'error';
@@ -258,8 +293,8 @@
       const province = document.getElementById('province').value;
       const provinceFeedback = document.getElementById('provinceFeedback');
       if (province.trim() !== '') {
-        provinceFeedback.textContent = 'Valid province/state.';
-        provinceFeedback.className = 'valid';
+        provinceFeedback.textContent = ''; 
+        provinceFeedback.className = '';
       } else {
         provinceFeedback.textContent = 'Province/State is required.';
         provinceFeedback.className = 'error';
@@ -271,8 +306,8 @@
       const postalCodeFeedback = document.getElementById('postalCodeFeedback');
       const regex = /^[A-Za-z0-9]{3,10}$/; // Alphanumeric postal code (adjust based on region)
       if (regex.test(postalCode)) {
-        postalCodeFeedback.textContent = 'Valid postal code.';
-        postalCodeFeedback.className = 'valid';
+        postalCodeFeedback.textContent = ''; 
+        postalCodeFeedback.className = '';
       } else {
         postalCodeFeedback.textContent = 'Postal code should be alphanumeric and between 3 and 10 characters.';
         postalCodeFeedback.className = 'error';
@@ -283,8 +318,8 @@
       const country = document.getElementById('country').value;
       const countryFeedback = document.getElementById('countryFeedback');
       if (country.trim() !== '') {
-        countryFeedback.textContent = 'Valid country.';
-        countryFeedback.className = 'valid';
+        countryFeedback.textContent = ''; 
+        countryFeedback.className = '';
       } else {
         countryFeedback.textContent = 'Country is required.';
         countryFeedback.className = 'error';
@@ -318,7 +353,8 @@
         alert('Please fill out the form correctly before submitting.');
       }
     });
-  </script>
+</script>
+
 </body>
 </html>
 
