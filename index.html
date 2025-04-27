@@ -73,6 +73,18 @@
       font-size: 1.1rem;
       margin-top: 0.5rem;
     }
+
+    .error {
+      color: red;
+      font-size: 0.9rem;
+      margin-top: 5px;
+    }
+
+    .valid {
+      color: green;
+      font-size: 0.9rem;
+      margin-top: 5px;
+    }
   </style>
 </head>
 <body>
@@ -87,46 +99,226 @@
 
   <form id="ticketForm">
     <input type="hidden" name="ConcertId" value="1" />
-    <input name="Name" placeholder="Full Name" required />
-    <input type="email" name="Email" placeholder="Email" required />
-    <input name="Phone" placeholder="Phone Number" required />
-    <input type="number" name="Quantity" placeholder="Number of Tickets" required min="1" />
-    <input name="CreditCard" placeholder="Credit Card Number" required />
-    <input name="Expiration" placeholder="Expiration (MM/YY)" required />
-    <input name="SecurityCode" placeholder="CVV" required />
-    <input name="Address" placeholder="Billing Address" required />
-    <input name="City" placeholder="City" required />
-    <input name="Province" placeholder="Province/State" required />
-    <input name="PostalCode" placeholder="Postal Code" required />
-    <input name="Country" placeholder="Country" required />
+    <input name="Name" id="name" placeholder="Full Name" required />
+    <div id="nameFeedback" class="error"></div>
+
+    <input type="email" name="Email" id="email" placeholder="Email" required />
+    <div id="emailFeedback" class="error"></div>
+
+    <input name="Phone" id="phone" placeholder="Phone Number" required />
+    <div id="phoneFeedback" class="error"></div>
+
+    <input type="number" name="Quantity" id="quantity" placeholder="Number of Tickets" required min="1" />
+    <div id="quantityFeedback" class="error"></div>
+
+    <input name="CreditCard" id="creditCard" placeholder="Credit Card Number" required />
+    <div id="creditCardFeedback" class="error"></div>
+
+    <input name="Expiration" id="expiration" placeholder="Expiration (MM/YY)" required />
+    <div id="expirationFeedback" class="error"></div>
+
+    <input name="SecurityCode" id="securityCode" placeholder="CVV" required />
+    <div id="securityCodeFeedback" class="error"></div>
+
+    <input name="Address" id="address" placeholder="Billing Address" required />
+    <div id="addressFeedback" class="error"></div>
+
+    <input name="City" id="city" placeholder="City" required />
+    <div id="cityFeedback" class="error"></div>
+
+    <input name="Province" id="province" placeholder="Province/State" required />
+    <div id="provinceFeedback" class="error"></div>
+
+    <input name="PostalCode" id="postalCode" placeholder="Postal Code" required />
+    <div id="postalCodeFeedback" class="error"></div>
+
+    <input name="Country" id="country" placeholder="Country" required />
+    <div id="countryFeedback" class="error"></div>
+
     <button type="submit">Buy Tickets</button>
   </form>
 
   <script>
-    document.getElementById('ticketForm').addEventListener('submit', async (e) => {
+    // Real-time Validation Functions
+    function validateName() {
+      const name = document.getElementById('name').value;
+      const nameFeedback = document.getElementById('nameFeedback');
+      const regex = /^[a-zA-Z\s]+$/; // Only letters and spaces
+      if (regex.test(name)) {
+        nameFeedback.textContent = 'Valid name.';
+        nameFeedback.className = 'valid';
+      } else {
+        nameFeedback.textContent = 'Name should only contain letters and spaces.';
+        nameFeedback.className = 'error';
+      }
+    }
+
+    function validateEmail() {
+      const email = document.getElementById('email').value;
+      const emailFeedback = document.getElementById('emailFeedback');
+      const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      if (regex.test(email)) {
+        emailFeedback.textContent = 'Valid email.';
+        emailFeedback.className = 'valid';
+      } else {
+        emailFeedback.textContent = 'Please enter a valid email address.';
+        emailFeedback.className = 'error';
+      }
+    }
+
+    function validatePhone() {
+      const phone = document.getElementById('phone').value;
+      const phoneFeedback = document.getElementById('phoneFeedback');
+      const regex = /^[0-9]{10}$/; // Assuming phone number is 10 digits
+      if (regex.test(phone)) {
+        phoneFeedback.textContent = 'Valid phone number.';
+        phoneFeedback.className = 'valid';
+      } else {
+        phoneFeedback.textContent = 'Phone number must be 10 digits.';
+        phoneFeedback.className = 'error';
+      }
+    }
+
+    function validateQuantity() {
+      const quantity = document.getElementById('quantity').value;
+      const quantityFeedback = document.getElementById('quantityFeedback');
+      if (quantity >= 1) {
+        quantityFeedback.textContent = 'Valid number of tickets.';
+        quantityFeedback.className = 'valid';
+      } else {
+        quantityFeedback.textContent = 'Please select at least 1 ticket.';
+        quantityFeedback.className = 'error';
+      }
+    }
+
+    function validateCreditCard() {
+      const creditCard = document.getElementById('creditCard').value;
+      const creditCardFeedback = document.getElementById('creditCardFeedback');
+      const regex = /^[0-9]{16}$/; // Assuming a 16-digit credit card
+      if (regex.test(creditCard)) {
+        creditCardFeedback.textContent = 'Valid credit card number.';
+        creditCardFeedback.className = 'valid';
+      } else {
+        creditCardFeedback.textContent = 'Credit card number must be 16 digits.';
+        creditCardFeedback.className = 'error';
+      }
+    }
+
+    function validateExpiration() {
+      const expiration = document.getElementById('expiration').value;
+      const expirationFeedback = document.getElementById('expirationFeedback');
+      const regex = /^(0[1-9]|1[0-2])\/?([0-9]{2})$/; // MM/YY format
+      if (regex.test(expiration)) {
+        expirationFeedback.textContent = 'Valid expiration date.';
+        expirationFeedback.className = 'valid';
+      } else {
+        expirationFeedback.textContent = 'Expiration date should be in MM/YY format.';
+        expirationFeedback.className = 'error';
+      }
+    }
+
+    function validateSecurityCode() {
+      const securityCode = document.getElementById('securityCode').value;
+      const securityCodeFeedback = document.getElementById('securityCodeFeedback');
+      const regex = /^[0-9]{3,4}$/; // 3 or 4 digits for CVV
+      if (regex.test(securityCode)) {
+        securityCodeFeedback.textContent = 'Valid CVV.';
+        securityCodeFeedback.className = 'valid';
+      } else {
+        securityCodeFeedback.textContent = 'CVV must be 3 or 4 digits.';
+        securityCodeFeedback.className = 'error';
+      }
+    }
+
+    function validateAddress() {
+      const address = document.getElementById('address').value;
+      const addressFeedback = document.getElementById('addressFeedback');
+      if (address.trim() !== '') {
+        addressFeedback.textContent = 'Valid address.';
+        addressFeedback.className = 'valid';
+      } else {
+        addressFeedback.textContent = 'Address is required.';
+        addressFeedback.className = 'error';
+      }
+    }
+
+    function validateCity() {
+      const city = document.getElementById('city').value;
+      const cityFeedback = document.getElementById('cityFeedback');
+      if (city.trim() !== '') {
+        cityFeedback.textContent = 'Valid city.';
+        cityFeedback.className = 'valid';
+      } else {
+        cityFeedback.textContent = 'City is required.';
+        cityFeedback.className = 'error';
+      }
+    }
+
+    function validateProvince() {
+      const province = document.getElementById('province').value;
+      const provinceFeedback = document.getElementById('provinceFeedback');
+      if (province.trim() !== '') {
+        provinceFeedback.textContent = 'Valid province/state.';
+        provinceFeedback.className = 'valid';
+      } else {
+        provinceFeedback.textContent = 'Province/State is required.';
+        provinceFeedback.className = 'error';
+      }
+    }
+
+    function validatePostalCode() {
+      const postalCode = document.getElementById('postalCode').value;
+      const postalCodeFeedback = document.getElementById('postalCodeFeedback');
+      const regex = /^[A-Za-z0-9]{3,10}$/; // Alphanumeric postal code (adjust based on region)
+      if (regex.test(postalCode)) {
+        postalCodeFeedback.textContent = 'Valid postal code.';
+        postalCodeFeedback.className = 'valid';
+      } else {
+        postalCodeFeedback.textContent = 'Postal code should be alphanumeric and between 3 and 10 characters.';
+        postalCodeFeedback.className = 'error';
+      }
+    }
+
+    function validateCountry() {
+      const country = document.getElementById('country').value;
+      const countryFeedback = document.getElementById('countryFeedback');
+      if (country.trim() !== '') {
+        countryFeedback.textContent = 'Valid country.';
+        countryFeedback.className = 'valid';
+      } else {
+        countryFeedback.textContent = 'Country is required.';
+        countryFeedback.className = 'error';
+      }
+    }
+
+    // Add event listeners for real-time validation
+    document.getElementById('name').addEventListener('input', validateName);
+    document.getElementById('email').addEventListener('input', validateEmail);
+    document.getElementById('phone').addEventListener('input', validatePhone);
+    document.getElementById('quantity').addEventListener('input', validateQuantity);
+    document.getElementById('creditCard').addEventListener('input', validateCreditCard);
+    document.getElementById('expiration').addEventListener('input', validateExpiration);
+    document.getElementById('securityCode').addEventListener('input', validateSecurityCode);
+    document.getElementById('address').addEventListener('input', validateAddress);
+    document.getElementById('city').addEventListener('input', validateCity);
+    document.getElementById('province').addEventListener('input', validateProvince);
+    document.getElementById('postalCode').addEventListener('input', validatePostalCode);
+    document.getElementById('country').addEventListener('input', validateCountry);
+
+    // Submit form after validation
+    document.getElementById('ticketForm').addEventListener('submit', function (e) {
       e.preventDefault();
 
-      const formData = new FormData(e.target);
-      const json = JSON.stringify(Object.fromEntries(formData));
-
-      try {
-        const response = await fetch('https://nscc-0475798-tickets-api-h7hbc9fte5apgqet.canadacentral-01.azurewebsites.net/api/tickets', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: json
-        });
-
-        if (response.ok) {
-          alert('Ticket purchase submitted successfully!');
-          e.target.reset();
-        } else {
-          alert('Something went wrong while submitting the form.');
-        }
-      } catch (err) {
-        console.error(err);
-        alert('Failed to connect to the server.');
+      // You can perform final checks here to ensure all fields are valid
+      const isFormValid = [...document.querySelectorAll('input')].every(input => input.validity.valid);
+      if (isFormValid) {
+        alert('Ticket purchase submitted successfully!');
+        e.target.reset();
+      } else {
+        alert('Please fill out the form correctly before submitting.');
       }
     });
   </script>
 </body>
 </html>
+
